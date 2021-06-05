@@ -26,9 +26,7 @@ No configuration required
 
 
 
-`
-import "package:flutter/material.dart";
-import "package:kakaomap_webview/kakaomap_webview.dart";
+```
 
 const String kakaoMapKey = 'yourKey';
 
@@ -81,4 +79,4 @@ class KakaoMapTest extends StatelessWidget {
         context, MaterialPageRoute(builder: (_) => KakaoMapScreen(url: url)));
   }
 }
-`
+```
