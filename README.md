@@ -5,7 +5,7 @@
 For more information you can do check here
 kakao map guide : https://apis.map.kakao.com/web/guide/
 
-**- Android**
+- **Android**
 
 Minimum sdk must be higher than 19
 
@@ -20,7 +20,7 @@ AndroidManifest.xml file
   android:usesCleartextTraffic="true">
 ```
 
-**- IOS**
+- **IOS**
 
 No configuration required
 
