@@ -6,6 +6,7 @@ For more information you can do check here
 kakao map guide : https://apis.map.kakao.com/web/guide/
 
 **- Android**
+
 Minimum sdk must be higher than 19
 
 AndroidManifest.xml file
@@ -20,6 +21,7 @@ AndroidManifest.xml file
 ```
 
 **- IOS**
+
 No configuration required
 
 ## Getting Started
