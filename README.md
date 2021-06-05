@@ -5,7 +5,7 @@
 For more information you can do check here
 kakao map guide : https://apis.map.kakao.com/web/guide/
 
-Android
+**- Android**
 Minimum sdk must be higher than 19
 
 AndroidManifest.xml file
@@ -19,12 +19,12 @@ AndroidManifest.xml file
   android:usesCleartextTraffic="true">
 ```
 
-IOS
+**- IOS**
 No configuration required
 
 ## Getting Started
 
-- Sample code
+**- Sample code**
 
 ```
 import 'package:flutter/material.dart';
