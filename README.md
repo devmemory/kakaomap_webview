@@ -12,21 +12,23 @@ AndroidManifest.xml file
 - Internet permission is required
 - Add android:usesCleartextTraffic="true" in application tag
 
-`
+```
 <application
   android:label="your app name"
   android:icon="@mipmap/ic_launcher"
   android:usesCleartextTraffic="true">
-`
+```
 
 IOS
 No configuration required
 
 ## Getting Started
 
-
+- Sample code
 
 ```
+import 'package:flutter/material.dart';
+import 'package:kakaomap_webview/kakaomap_webview.dart';
 
 const String kakaoMapKey = 'yourKey';
 
