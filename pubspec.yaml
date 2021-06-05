@@ -2,7 +2,7 @@ name: kakaomap_webview
 description: Kakao map which you can use simply. Some features are not supported.
 version: 0.0.1
 authors: devmemory <devmemorydh@gmail.com>
-#`homepage:
+homepage:
 
 
 environment:
