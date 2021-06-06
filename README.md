@@ -28,7 +28,9 @@ No configuration required
 
 First import the package
 
-`import 'package:kakaomap_webview/kakaomap_webview.dart';`
+```
+import 'package:kakaomap_webview/kakaomap_webview.dart';
+```
 
 You can use this as Widget and full screen webview
 
