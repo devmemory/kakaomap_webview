@@ -22,7 +22,7 @@ class KakaoMapUtil {
   }
 
   /// This method is used for kakao map screen lat, lng, placeName(optional)
-  /// If placeName is null, marker won't be showing
+  /// If placeName is null, marker might not be showing
   /// And to get resolved link, please use getResolvedLink method with this
   String getKakaoMapURL(double lat, double lng, {String? name}) {
     String placeName = '';
@@ -32,8 +32,7 @@ class KakaoMapUtil {
     return 'https://map.kakao.com/link/map/$placeName$lat,$lng';
   }
 
-  /// This is to get the resolved link with lat, lng, placeName(optional)
-  /// If placeName is null, marker won't be showing
+  /// This method is to use getResolvedLink and getKakaoMapURL easily with latitude, longitude, placeName(optional)
   Future<String> getMapScreenURL(double lat, double lng, {String? name}) async {
     String originalURL = getKakaoMapURL(lat, lng, name: name);
 
