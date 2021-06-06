@@ -2,7 +2,7 @@
 
 **First, you need to get a kakao map javascript key**
 
-For more information you can do check here
+For more information you can check here
 kakao map guide : https://apis.map.kakao.com/web/guide/
 
 - **Android**
