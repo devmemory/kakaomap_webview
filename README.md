@@ -64,7 +64,7 @@ KakaoMapUtil util = KakaoMapUtil();
         context, MaterialPageRoute(builder: (_) => KakaoMapScreen(url: url)));
 ```
 
-![다운로드](https://user-images.githubusercontent.com/71013471/120911004-742b1b00-c6be-11eb-95c0-8323c900ed91.gif)
+![kakaomap](https://user-images.githubusercontent.com/71013471/120911015-9329ad00-c6be-11eb-82fc-af3cb77faaed.gif)
 
 - **Full sample code**
 
