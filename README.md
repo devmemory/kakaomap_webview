@@ -26,7 +26,7 @@ No configuration required
 
 ## How to use
 
-First import the package
+First, import the package
 
 ```
 import 'package:kakaomap_webview/kakaomap_webview.dart';

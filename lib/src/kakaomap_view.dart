@@ -32,9 +32,9 @@ class KakaoMapView extends StatelessWidget {
   /// marker tap event
   final void Function(JavascriptMessage)? onTapMarker;
 
-  /// This is used to make your own features
-  /// Only map size and center position is set
-  /// And other optional features won't work
+  /// This is used to make your own features.
+  /// Only map size and center position is set.
+  /// And other optional features won't work.
   /// such as Zoom, MapType, markerImage, onTapMarker
   final String? customScript;
 
