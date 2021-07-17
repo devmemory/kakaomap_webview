@@ -1,3 +1,10 @@
+## 0.1.0
+* Bug fix - missing part in custom script
+* MapType feature is added
+* Marker draggable option is added
+* Polygon feature is added
+* example for multi markers
+
 ## 0.0.2+1
 * ReadMe and some comments are changed
 

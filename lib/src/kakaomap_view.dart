@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:kakaomap_webview/src/kakao_polygon.dart';
+import 'package:kakaomap_webview/src/kakaomap_type.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class KakaoMapView extends StatelessWidget {
@@ -11,34 +13,45 @@ class KakaoMapView extends StatelessWidget {
   /// Map height
   final double height;
 
-  /// latitude
+  /// Latitude
   final double lat;
 
-  /// longitude
+  /// Longitude
   final double lng;
 
   /// Kakao map key javascript key
   final String kakaoMapKey;
 
-  /// If it's true, zoomController will be enabled
+  /// If it's true, zoomController will be enabled.
   final bool showZoomControl;
 
-  /// If it's true, mapTypeController will be enabled. Such as normal map, sky view
+  /// If it's true, mapTypeController will be enabled. Normal map, Sky view are supported
   final bool showMapTypeControl;
 
   /// Set marker image. If it's null, default marker will be showing
   final String markerImageURL;
 
-  /// marker tap event
+  /// TRAFFIC, ROADVIEW, TERRAIN, USE_DISTRICT, BICYCLE are supported.
+  /// If null, type is default
+  final MapType? mapType;
+
+  /// Set marker draggable. Default is false
+  final bool draggableMarker;
+
+  /// Marker tap event
   final void Function(JavascriptMessage)? onTapMarker;
+
+  /// [KakaoPolygon] is required [KakaoPolygon.polygon] to make polygon.
+  /// If null, it won't be enabled
+  final KakaoPolygon? polygon;
 
   /// This is used to make your own features.
   /// Only map size and center position is set.
   /// And other optional features won't work.
-  /// such as Zoom, MapType, markerImage, onTapMarker
+  /// such as Zoom, MapType, markerImage, onTapMarker.
   final String? customScript;
 
-  /// When you want to use key for the widget to get some features
+  /// When you want to use key for the widget to get some features.
   /// such as position, size, etc you can use this
   final GlobalKey? mapWidgetKey;
 
@@ -48,12 +61,15 @@ class KakaoMapView extends StatelessWidget {
       required this.kakaoMapKey,
       required this.lat,
       required this.lng,
+      this.polygon,
       this.showZoomControl = false,
       this.showMapTypeControl = false,
       this.onTapMarker,
       this.markerImageURL = '',
       this.customScript,
-      this.mapWidgetKey});
+      this.mapWidgetKey,
+      this.draggableMarker = false,
+      this.mapType});
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +80,12 @@ class KakaoMapView extends StatelessWidget {
       child: WebView(
           initialUrl: (customScript == null) ? _getHTML() : _customScriptHTML(),
           javascriptMode: JavascriptMode.unrestricted,
-          javascriptChannels: onTapMarker == null ? null : Set.from([
-            JavascriptChannel(
-                name: 'onTapMarker', onMessageReceived: onTapMarker!)
-          ]),
+          javascriptChannels: onTapMarker == null
+              ? null
+              : Set.from([
+                  JavascriptChannel(
+                      name: 'onTapMarker', onMessageReceived: onTapMarker!)
+                ]),
           debuggingEnabled: true,
           gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
             Factory(() => EagerGestureRecognizer()),
@@ -89,9 +107,9 @@ class KakaoMapView extends StatelessWidget {
 
     return Uri.dataFromString('''
 <html>
-<header>
+<head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
-</header>
+</head>
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
 	<script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
@@ -135,6 +153,26 @@ class KakaoMapView extends StatelessWidget {
       var mapTypeControl = new kakao.maps.MapTypeControl();
       map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
     }
+    
+    if(${mapType != null}){
+      var changeMapType = ${mapType?.getType};
+      
+      map.addOverlayMapTypeId(changeMapType);
+    }
+    
+    marker.setDraggable($draggableMarker); 
+    
+    if(${polygon != null}){
+      var polygon = new kakao.maps.Polygon({
+	      map: map,
+        path: [${polygon?.getPolygon}],
+        strokeWeight: ${polygon?.strokeWeight},
+        strokeColor: ${polygon?.getStrokeColor},
+        strokeOpacity: ${polygon?.strokeColorOpacity},
+        fillColor: ${polygon?.getPolygonColor},
+        fillOpacity: ${polygon?.polygonColorOpacity} 
+      });
+    }
 	</script>
 </body>
 </html>
@@ -150,9 +188,9 @@ class KakaoMapView extends StatelessWidget {
 
     return Uri.dataFromString('''
 <html>
-<header>
+<head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
-</header>
+</head>
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
 	<script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
@@ -163,6 +201,8 @@ class KakaoMapView extends StatelessWidget {
 			center: new kakao.maps.LatLng($lat, $lng),
 			level: 3
 		};
+
+		var map = new kakao.maps.Map(container, options);
 		
 		$customScript
 	</script>
