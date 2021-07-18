@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -38,6 +39,17 @@ class KakaoMapView extends StatelessWidget {
   /// Set marker draggable. Default is false
   final bool draggableMarker;
 
+  /// Overlay text. If null, it won't be enabled.
+  /// It must not be used with [customOverlay]
+  final String? overlayText;
+
+  /// Overlay style. You can customize your own overlay style
+  final String? customOverlayStyle;
+
+  /// Overlay text with other features.
+  /// It must not be used with [overlayText]
+  final String? customOverlay;
+
   /// Marker tap event
   final void Function(JavascriptMessage)? onTapMarker;
 
@@ -61,6 +73,9 @@ class KakaoMapView extends StatelessWidget {
       required this.kakaoMapKey,
       required this.lat,
       required this.lng,
+      this.overlayText,
+      this.customOverlayStyle,
+      this.customOverlay,
       this.polygon,
       this.showZoomControl = false,
       this.showMapTypeControl = false,
@@ -96,6 +111,7 @@ class KakaoMapView extends StatelessWidget {
   String _getHTML() {
     String iosSetting = '';
     String markerImageOption = '';
+    String overlayStyle = '';
 
     if (Platform.isIOS) {
       iosSetting = 'min-width:${width}px;min-height:${height}px;';
@@ -105,10 +121,29 @@ class KakaoMapView extends StatelessWidget {
       markerImageOption = 'image: markerImage';
     }
 
+    if (overlayText != null) {
+      if (customOverlayStyle == null) {
+        overlayStyle = '''
+<style>
+  .label {margin-bottom: 96px;}
+  .label * {display: inline-block;vertical-align: top;}
+  .label .left {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
+  .label .center {background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png) repeat-x;display: inline-block;height: 24px;font-size: 12px;line-height: 24px;}
+  .label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
+</style>
+      ''';
+      } else {
+        overlayStyle = customOverlayStyle ?? '';
+      }
+    } else {
+      overlayStyle = customOverlayStyle ?? '';
+    }
+
     return Uri.dataFromString('''
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+$overlayStyle
 </head>
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
@@ -137,6 +172,21 @@ class KakaoMapView extends StatelessWidget {
     });
     
     marker.setMap(map);
+    
+    if(${overlayText != null}){
+      var content = '<div class ="label"><span class="left"></span><span class="center">$overlayText</span><span class="right"></span></div>';
+  
+      var overlayPosition = new kakao.maps.LatLng($lat, $lng);  
+  
+      var customOverlay = new kakao.maps.CustomOverlay({
+          map: map,
+          position: overlayPosition,
+          content: content,
+          yAnchor: 0.8
+      });
+    } else if(${customOverlay != null}){
+      $customOverlay
+    }
     
     if(${onTapMarker != null}){
       kakao.maps.event.addListener(marker, 'click', function(){
@@ -176,7 +226,8 @@ class KakaoMapView extends StatelessWidget {
 	</script>
 </body>
 </html>
-    ''', mimeType: 'text/html').toString();
+    ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString();
   }
 
   String _customScriptHTML() {
@@ -196,7 +247,7 @@ class KakaoMapView extends StatelessWidget {
 	<script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
 	<script>
 		var container = document.getElementById('map');
-		
+				
 		var options = {
 			center: new kakao.maps.LatLng($lat, $lng),
 			level: 3
@@ -208,6 +259,7 @@ class KakaoMapView extends StatelessWidget {
 	</script>
 </body>
 </html>
-    ''', mimeType: 'text/html').toString();
+    ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString();
   }
 }

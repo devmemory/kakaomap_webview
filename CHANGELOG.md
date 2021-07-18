@@ -1,3 +1,8 @@
+## 0.2.0
+* UTF-8 is supported
+* Overlay is supported
+* Customizing overlay is supported
+
 ## 0.1.1
 * Removed unnecessary code
 
