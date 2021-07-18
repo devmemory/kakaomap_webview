@@ -13,20 +13,20 @@ class KakaoPolygon {
 
   /// StrokeColor. Default blue.
   /// If you want to change opacity, use [strokeColorOpacity]
-  Color strokeColor = Colors.blue;
+  Color strokeColor;
 
   /// StrokeWeight. Default 2.0
-  double strokeWeight = 2.0;
+  double strokeWeight;
 
   /// StrokeWeight. Default 0.8
-  double strokeColorOpacity = 0.8;
+  double strokeColorOpacity;
 
   /// Polygon color. Default lightBlue.
   /// If you want to change opacity, use [polygonColorOpacity]
-  Color polygonColor = Colors.lightBlue;
+  Color polygonColor;
 
   /// Polygon color opacity. Default 0.7
-  double polygonColorOpacity = 0.7;
+  double polygonColorOpacity;
 
   /// This getter is used to make a hex code for the stroke color
   String get getStrokeColor => strokeColor.toHex;

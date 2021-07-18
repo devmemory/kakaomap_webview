@@ -1,3 +1,6 @@
+## 0.1.1
+* Removed unnecessary code
+
 ## 0.1.0
 * Bug fix - missing part in custom script
 * MapType feature is added
