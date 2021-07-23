@@ -8,9 +8,6 @@ import 'package:kakaomap_webview/src/kakaomap_type.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class KakaoMapView extends StatelessWidget {
-  /// domain address to use kakao map in your own server
-  final String domain;
-
   /// Map width. If width is wider than screen size, the map center can be changed
   final double width;
 
@@ -76,7 +73,6 @@ class KakaoMapView extends StatelessWidget {
       required this.kakaoMapKey,
       required this.lat,
       required this.lng,
-      this.domain = '',
       this.overlayText,
       this.customOverlayStyle,
       this.customOverlay,
@@ -151,7 +147,7 @@ $overlayStyle
 </head>
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
-	<script type="text/javascript" src='${domain}https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
+	<script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
 	<script>
 		var container = document.getElementById('map');
 		
@@ -248,7 +244,7 @@ $overlayStyle
 </head>
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
-	<script type="text/javascript" src='${domain}https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
+	<script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
 	<script>
 		var container = document.getElementById('map');
 				
