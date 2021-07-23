@@ -26,6 +26,13 @@ No configuration required
 
 ## How to use
 
+* When you want to use with your domain, you can use domain parameter
+```
+KakaoMapView(
+    domain: 'your domain address'
+    );
+```
+
 First, import the package
 
 ```
