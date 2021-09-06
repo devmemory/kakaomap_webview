@@ -1,3 +1,10 @@
+## 0.2.2+1
+* Update a ReadMe
+
+## 0.2.2
+* Added IOS requirement for an issue, Please check ReadMe.md
+* Update a ReadMe
+
 ## 0.2.1+1
 * Bug fix
 

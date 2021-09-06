@@ -91,6 +91,8 @@ var customOverlay = new kakao.maps.CustomOverlay({
     String url =
         await util.getMapScreenURL(37.402056, 127.108212, name: 'Kakao 본사');
 
+    debugPrint('url : $url');
+
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => KakaoMapScreen(url: url)));
   }

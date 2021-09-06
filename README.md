@@ -7,7 +7,7 @@ kakao map guide : https://apis.map.kakao.com/web/guide/
 
 - **Android**
 
-Minimum sdk must be higher than 19
+Minimum sdk must be higher than 21
 
 AndroidManifest.xml file
 - Internet permission is required
@@ -22,7 +22,17 @@ AndroidManifest.xml file
 
 - **IOS**
 
-No configuration required
+- IOS version must be higher than 9.0
+
+- Add following code in your Info.plist
+
+```
+<key>NSAppTransportSecurity</key>
+      <dict>
+        <key>NSAllowsArbitraryLoads</key> <true/>
+      </dict>
+    <key>io.flutter.embedded_views_preview</key> <true/>
+```
 
 ## How to use
 First, import the package
