@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:kakaomap_webview/src/kakao_latlng.dart';
 
 class KakaoMapUtil {
   /// To get resolved link from redirection.
@@ -39,5 +40,12 @@ class KakaoMapUtil {
     String resolvedURL = await getResolvedLink(originalURL);
 
     return resolvedURL;
+  }
+
+  /// This method is to get Lat lng from camera idle event
+  KakaoLatLng getLatLng(String latlng) {
+    String oob = latlng.substring(1, latlng.length - 1);
+    List<String> list = oob.split(',');
+    return KakaoLatLng(double.parse(list.first), double.parse(list.last));
   }
 }

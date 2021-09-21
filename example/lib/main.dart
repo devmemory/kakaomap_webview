@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 
@@ -8,9 +9,11 @@ void main() {
 }
 
 class KakaoMapTest extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var _mapController;
     return Scaffold(
       appBar: AppBar(title: Text('Kakao map webview test')),
       body: Column(
@@ -26,21 +29,23 @@ class KakaoMapTest extends StatelessWidget {
               showZoomControl: true,
               draggableMarker: true,
               mapType: MapType.BICYCLE,
+              mapController: (controller) {
+                _mapController = controller;
+              },
               polygon: KakaoPolygon(
-                polygon: [
-                  KakaoLatLng(33.45086654081833, 126.56906858718982),
-                  KakaoLatLng(33.45010890948828, 126.56898629127468),
-                  KakaoLatLng(33.44979857909499, 126.57049357211622),
-                  KakaoLatLng(33.450137483918496, 126.57202991943016),
-                  KakaoLatLng(33.450706188506054, 126.57223147947938),
-                  KakaoLatLng(33.45164068091554, 126.5713126693152)
-                ],
-                polygonColor: Colors.red,
-                polygonColorOpacity: 0.3,
-                strokeColor: Colors.deepOrange,
-                strokeWeight: 2.5,
-                strokeColorOpacity: 0.9
-              ),
+                  polygon: [
+                    KakaoLatLng(33.45086654081833, 126.56906858718982),
+                    KakaoLatLng(33.45010890948828, 126.56898629127468),
+                    KakaoLatLng(33.44979857909499, 126.57049357211622),
+                    KakaoLatLng(33.450137483918496, 126.57202991943016),
+                    KakaoLatLng(33.450706188506054, 126.57223147947938),
+                    KakaoLatLng(33.45164068091554, 126.5713126693152)
+                  ],
+                  polygonColor: Colors.red,
+                  polygonColorOpacity: 0.3,
+                  strokeColor: Colors.deepOrange,
+                  strokeWeight: 2.5,
+                  strokeColorOpacity: 0.9),
               // overlayText: '카카오!',
               customOverlayStyle: '''<style>
               .customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
@@ -70,7 +75,46 @@ var customOverlay = new kakao.maps.CustomOverlay({
               onTapMarker: (message) {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(message.message)));
+              },
+              zoomChanged: (message) {
+                debugPrint('current zoom level : ${message.message}');
+              },
+              cameraIdle: (message) {
+                KakaoMapUtil util = KakaoMapUtil();
+                KakaoLatLng latlng = util.getLatLng(message.message);
+                debugPrint('current lat lng : ${latlng.lat}, ${latlng.lng}');
               }),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () {
+                  _mapController.evaluateJavascript(
+                      'map.setLevel(map.getLevel() - 1, {animate: true})');
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.red,
+                  child: const Icon(
+                    Icons.remove,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  _mapController.evaluateJavascript(
+                      'map.setLevel(map.getLevel() + 1, {animate: true})');
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.blue,
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
           ElevatedButton(
               child: Text('Kakao map screen'),
               onPressed: () async {

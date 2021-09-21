@@ -14,10 +14,13 @@ class KakaoMapView extends StatelessWidget {
   /// Map height
   final double height;
 
-  /// Latitude
+  /// default zoom level : 3 (0 ~ 14)
+  final int zoomLevel;
+
+  /// center latitude
   final double lat;
 
-  /// Longitude
+  /// center longitude
   final double lng;
 
   /// Kakao map key javascript key
@@ -53,6 +56,12 @@ class KakaoMapView extends StatelessWidget {
   /// Marker tap event
   final void Function(JavascriptMessage)? onTapMarker;
 
+  /// Zoom change event
+  final void Function(JavascriptMessage)? zoomChanged;
+
+  /// When user stop moving camera, this event will occur
+  final void Function(JavascriptMessage)? cameraIdle;
+
   /// [KakaoPolygon] is required [KakaoPolygon.polygon] to make polygon.
   /// If null, it won't be enabled
   final KakaoPolygon? polygon;
@@ -67,24 +76,32 @@ class KakaoMapView extends StatelessWidget {
   /// such as position, size, etc you can use this
   final GlobalKey? mapWidgetKey;
 
-  KakaoMapView(
-      {required this.width,
-      required this.height,
-      required this.kakaoMapKey,
-      required this.lat,
-      required this.lng,
-      this.overlayText,
-      this.customOverlayStyle,
-      this.customOverlay,
-      this.polygon,
-      this.showZoomControl = false,
-      this.showMapTypeControl = false,
-      this.onTapMarker,
-      this.markerImageURL = '',
-      this.customScript,
-      this.mapWidgetKey,
-      this.draggableMarker = false,
-      this.mapType});
+  /// You can use js code with controller.
+  /// example)
+  /// mapController.evaluateJavascript('map.setLevel(map.getLevel() + 1, {animate: true})');
+  final void Function(WebViewController)? mapController;
+
+  KakaoMapView({required this.width,
+    required this.height,
+    required this.kakaoMapKey,
+    required this.lat,
+    required this.lng,
+    this.zoomLevel = 3,
+    this.overlayText,
+    this.customOverlayStyle,
+    this.customOverlay,
+    this.polygon,
+    this.showZoomControl = false,
+    this.showMapTypeControl = false,
+    this.onTapMarker,
+    this.zoomChanged,
+    this.cameraIdle,
+    this.markerImageURL = '',
+    this.customScript,
+    this.mapWidgetKey,
+    this.draggableMarker = false,
+    this.mapType,
+    this.mapController});
 
   @override
   Widget build(BuildContext context) {
@@ -93,19 +110,40 @@ class KakaoMapView extends StatelessWidget {
       height: height,
       width: width,
       child: WebView(
-          initialUrl: (customScript == null) ? _getHTML() : _customScriptHTML(),
-          javascriptMode: JavascriptMode.unrestricted,
-          javascriptChannels: onTapMarker == null
-              ? null
-              : Set.from([
-                  JavascriptChannel(
-                      name: 'onTapMarker', onMessageReceived: onTapMarker!)
-                ]),
-          debuggingEnabled: true,
-          gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-            Factory(() => EagerGestureRecognizer()),
-          ].toSet()),
+        initialUrl: (customScript == null) ? _getHTML() : _customScriptHTML(),
+        onWebViewCreated: mapController,
+        javascriptMode: JavascriptMode.unrestricted,
+        javascriptChannels: _getChannels,
+        debuggingEnabled: true,
+        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+          Factory(() => EagerGestureRecognizer()),
+        ].toSet(),
+      ),
     );
+  }
+
+  Set<JavascriptChannel>? get _getChannels {
+    Set<JavascriptChannel>? channels = {};
+    if (onTapMarker != null) {
+      channels.add(JavascriptChannel(
+          name: 'onTapMarker', onMessageReceived: onTapMarker!));
+    }
+
+    if (zoomChanged != null) {
+      channels.add(JavascriptChannel(
+          name: 'zoomChanged', onMessageReceived: zoomChanged!));
+    }
+
+    if(cameraIdle != null){
+      channels.add(JavascriptChannel(
+          name: 'cameraIdle', onMessageReceived: cameraIdle!));
+    }
+
+    if (channels.isEmpty) {
+      return null;
+    }
+
+    return channels;
   }
 
   String _getHTML() {
@@ -153,7 +191,7 @@ $overlayStyle
 		
 		var options = {
 			center: new kakao.maps.LatLng($lat, $lng),
-			level: 3
+			level: $zoomLevel
 		};
 
 		var map = new kakao.maps.Map(container, options);
@@ -193,6 +231,20 @@ $overlayStyle
         onTapMarker.postMessage('marker is tapped');
       });
     }
+		
+		if(${zoomChanged != null}){
+		  kakao.maps.event.addListener(map, 'zoom_changed', function() {        
+        var level = map.getLevel();
+        zoomChanged.postMessage(level.toString());
+      });
+		}
+		
+		if(${cameraIdle != null}){
+		  kakao.maps.event.addListener(map, 'dragend', function() {        
+        var latlng = map.getCenter(); 
+        cameraIdle.postMessage(latlng.toString());
+      });
+		}
 		
 		if($showZoomControl){
 		  var zoomControl = new kakao.maps.ZoomControl();

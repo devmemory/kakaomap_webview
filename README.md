@@ -277,3 +277,73 @@ Sample code
     });
                   '''
 ```
+
+- **Map controller**
+
+![controller](https://user-images.githubusercontent.com/71013471/134121052-3e12befb-b642-4c89-b32c-88dd810c074b.gif)
+
+Now you can control map more with webview controller.
+
+Sample code
+
+```
+    KakaoMapView(
+       mapController: (controller) {
+          _mapController = controller;
+       },
+    ),
+    Row(
+       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+       children: [
+         InkWell(
+           onTap: () {
+             _mapController.evaluateJavascript(
+                  'map.setLevel(map.getLevel() - 1, {animate: true})');
+           },
+           child: CircleAvatar(
+             backgroundColor: Colors.red,
+             child: const Icon(
+               Icons.remove,
+               color: Colors.white,
+               ),
+             ),
+           ),
+         InkWell(
+           onTap: () {
+             _mapController.evaluateJavascript(
+                  'map.setLevel(map.getLevel() + 1, {animate: true})');
+           },
+           child: CircleAvatar(
+             backgroundColor: Colors.blue,
+             child: const Icon(
+               Icons.add,
+               color: Colors.white,
+               ),
+             ),
+           ),
+         ],
+       ),
+```
+
+- **Callbacks**
+
+Tap marker, zoom change, camera idel events are available.
+
+Sample code
+
+```
+    KakaoMapView(
+      onTapMarker: (message) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message.message)));
+      },
+      zoomChanged: (message) {
+        debugPrint('current zoom level : ${message.message}');
+      },
+      cameraIdle: (message) {
+        KakaoMapUtil util = KakaoMapUtil();
+        KakaoLatLng latlng = util.getLatLng(message.message);
+        debugPrint('current lat lng : ${latlng.lat}, ${latlng.lng}');
+      },
+    )
+```

@@ -1,3 +1,9 @@
+## 0.3.0
+* default zoom level is added
+* map controller is added
+* zoom changed event is added
+* camera idle event is added
+
 ## 0.2.2+1
 * Update a ReadMe
 
