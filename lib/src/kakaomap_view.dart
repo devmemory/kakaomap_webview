@@ -67,9 +67,9 @@ class KakaoMapView extends StatelessWidget {
   final KakaoPolygon? polygon;
 
   /// This is used to make your own features.
-  /// Only map size and center position is set.
+  /// Only map size, center position and zoom level are set.
   /// And other optional features won't work.
-  /// such as Zoom, MapType, markerImage, onTapMarker.
+  /// such as MapType, markerImage, onTapMarker.
   final String? customScript;
 
   /// When you want to use key for the widget to get some features.
