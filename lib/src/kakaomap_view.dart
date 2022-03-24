@@ -293,6 +293,7 @@ $overlayStyle
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+$customOverlayStyle
 </head>
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
@@ -302,7 +303,7 @@ $overlayStyle
 				
 		var options = {
 			center: new kakao.maps.LatLng($lat, $lng),
-			level: 3
+			level: $zoomLevel
 		};
 
 		var map = new kakao.maps.Map(container, options);
