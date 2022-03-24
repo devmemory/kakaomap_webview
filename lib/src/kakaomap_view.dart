@@ -72,6 +72,9 @@ class KakaoMapView extends StatelessWidget {
   /// such as MapType, markerImage, onTapMarker.
   final String? customScript;
 
+  /// You can add your own css style
+  final String? customStyle;
+
   /// When you want to use key for the widget to get some features.
   /// such as position, size, etc you can use this
   final GlobalKey? mapWidgetKey;
@@ -88,6 +91,7 @@ class KakaoMapView extends StatelessWidget {
     required this.lng,
     this.zoomLevel = 3,
     this.overlayText,
+    @Deprecated('Use customStyle')
     this.customOverlayStyle,
     this.customOverlay,
     this.polygon,
@@ -97,6 +101,7 @@ class KakaoMapView extends StatelessWidget {
     this.zoomChanged,
     this.cameraIdle,
     this.markerImageURL = '',
+    this.customStyle,
     this.customScript,
     this.mapWidgetKey,
     this.draggableMarker = false,
@@ -181,6 +186,9 @@ class KakaoMapView extends StatelessWidget {
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+<style>
+$customStyle
+</style>
 $overlayStyle
 </head>
 <body style="padding:0; margin:0;">
@@ -293,6 +301,9 @@ $overlayStyle
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+<style>
+$customStyle
+</style>
 $customOverlayStyle
 </head>
 <body style="padding:0; margin:0;">
