@@ -81,7 +81,7 @@ You can use this as Widget and full screen webview
 
 ```
 import 'package:flutter/material.dart';
-import 'package:kakaomap_webview/kakaomap_webview.dart';
+import 'package:example/kakaomap_screen.dart';
 
 const String kakaoMapKey = 'yourKey';
 
@@ -135,6 +135,11 @@ class KakaoMapTest extends StatelessWidget {
   }
 }
 ```
+
+* In case you want to use KakaoMapScreen, intent and itms-app scheme url need to be handled. Please check example.
+
+- Flutter : https://github.com/devmemory/kakaomap_webview/blob/main/example/lib/kakaomap_screen.dart
+- Android : https://github.com/devmemory/kakaomap_webview/tree/main/example/android/app/src/main
 
 - **Add polygon**
 
@@ -284,7 +289,7 @@ Sample code
 ![controller](https://user-images.githubusercontent.com/71013471/134121052-3e12befb-b642-4c89-b32c-88dd810c074b.gif)
 
 Now you can control map more with webview controller.
-When mapController is not initated, please use StatefulWidget
+When mapController is null, please use StatefulWidget.
 
 Sample code
 

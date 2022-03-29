@@ -1,3 +1,6 @@
+## 0.4.0+1
+* ReadMe update
+
 ## 0.4.0
 * default zoom level is added in customScript
 * [Deprecated] KakaoMapScreen is deprecated
