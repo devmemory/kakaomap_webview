@@ -1,6 +1,6 @@
 name: kakaomap_webview
 description: Kakao map which you can use simply. Some features are not supported.
-version: 0.3.0
+version: 0.4.0
 homepage: https://github.com/devmemory/kakaomap_webview
 
 
@@ -11,8 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^2.0.12
-  http: ^0.13.3
+  webview_flutter: ^3.0.1
+  http: ^0.13.4
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_test:

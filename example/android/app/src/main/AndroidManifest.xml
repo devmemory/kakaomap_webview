@@ -1,6 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.example">
 
+    <queries>
+        <package android:name="net.daum.android.map"/>
+        <package android:name="com.astroframe.seoulbus"/>
+        <package android:name="net.orizinal.subway"/>
+    </queries>
+
     <uses-permission android:name="android.permission.INTERNET"/>
 
    <application

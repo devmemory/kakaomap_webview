@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -81,27 +80,28 @@ class KakaoMapView extends StatelessWidget {
   /// mapController.evaluateJavascript('map.setLevel(map.getLevel() + 1, {animate: true})');
   final void Function(WebViewController)? mapController;
 
-  KakaoMapView({required this.width,
-    required this.height,
-    required this.kakaoMapKey,
-    required this.lat,
-    required this.lng,
-    this.zoomLevel = 3,
-    this.overlayText,
-    this.customOverlayStyle,
-    this.customOverlay,
-    this.polygon,
-    this.showZoomControl = false,
-    this.showMapTypeControl = false,
-    this.onTapMarker,
-    this.zoomChanged,
-    this.cameraIdle,
-    this.markerImageURL = '',
-    this.customScript,
-    this.mapWidgetKey,
-    this.draggableMarker = false,
-    this.mapType,
-    this.mapController});
+  KakaoMapView(
+      {required this.width,
+      required this.height,
+      required this.kakaoMapKey,
+      required this.lat,
+      required this.lng,
+      this.zoomLevel = 3,
+      this.overlayText,
+      this.customOverlayStyle,
+      this.customOverlay,
+      this.polygon,
+      this.showZoomControl = false,
+      this.showMapTypeControl = false,
+      this.onTapMarker,
+      this.zoomChanged,
+      this.cameraIdle,
+      this.markerImageURL = '',
+      this.customScript,
+      this.mapWidgetKey,
+      this.draggableMarker = false,
+      this.mapType,
+      this.mapController});
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +134,7 @@ class KakaoMapView extends StatelessWidget {
           name: 'zoomChanged', onMessageReceived: zoomChanged!));
     }
 
-    if(cameraIdle != null){
+    if (cameraIdle != null) {
       channels.add(JavascriptChannel(
           name: 'cameraIdle', onMessageReceived: cameraIdle!));
     }
@@ -147,13 +147,8 @@ class KakaoMapView extends StatelessWidget {
   }
 
   String _getHTML() {
-    String iosSetting = '';
     String markerImageOption = '';
     String overlayStyle = '';
-
-    if (Platform.isIOS) {
-      iosSetting = 'min-width:${width}px;min-height:${height}px;';
-    }
 
     if (markerImageURL.isNotEmpty) {
       markerImageOption = 'image: markerImage';
@@ -181,11 +176,11 @@ class KakaoMapView extends StatelessWidget {
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+  <script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
 $overlayStyle
 </head>
 <body style="padding:0; margin:0;">
-	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
-	<script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
+	<div id='map' style="width:100%;height:100%;min-width:${width}px;min-height:${height}px;"/>
 	<script>
 		var container = document.getElementById('map');
 		
@@ -283,26 +278,20 @@ $overlayStyle
   }
 
   String _customScriptHTML() {
-    String iosSetting = '';
-
-    if (Platform.isIOS) {
-      iosSetting = 'min-width:${width}px;min-height:${height}px;';
-    }
-
     return Uri.dataFromString('''
 <html>
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+  <script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
 </head>
 <body style="padding:0; margin:0;">
-	<div id='map' style="width:100%;height:100%;$iosSetting"></div>
-	<script type="text/javascript" src='https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=$kakaoMapKey'></script>
+	<div id='map' style="width:100%;height:100%;min-width:${width}px;min-height:${height}px;"></div>
 	<script>
 		var container = document.getElementById('map');
 				
 		var options = {
 			center: new kakao.maps.LatLng($lat, $lng),
-			level: 3
+			level: $zoomLevel
 		};
 
 		var map = new kakao.maps.Map(container, options);

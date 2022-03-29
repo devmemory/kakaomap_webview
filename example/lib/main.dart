@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:example/kakaomap_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
 
@@ -8,12 +8,17 @@ void main() {
   runApp(MaterialApp(home: KakaoMapTest()));
 }
 
-class KakaoMapTest extends StatelessWidget {
+class KakaoMapTest extends StatefulWidget {
+  @override
+  State<KakaoMapTest> createState() => _KakaoMapTestState();
+}
+
+class _KakaoMapTestState extends State<KakaoMapTest> {
+  var _mapController;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var _mapController;
     return Scaffold(
       appBar: AppBar(title: Text('Kakao map webview test')),
       body: Column(
@@ -89,7 +94,7 @@ var customOverlay = new kakao.maps.CustomOverlay({
             children: [
               InkWell(
                 onTap: () {
-                  _mapController.evaluateJavascript(
+                  _mapController.runJavascript(
                       'map.setLevel(map.getLevel() - 1, {animate: true})');
                 },
                 child: CircleAvatar(
@@ -102,7 +107,7 @@ var customOverlay = new kakao.maps.CustomOverlay({
               ),
               InkWell(
                 onTap: () {
-                  _mapController.evaluateJavascript(
+                  _mapController.runJavascript(
                       'map.setLevel(map.getLevel() + 1, {animate: true})');
                 },
                 child: CircleAvatar(
@@ -163,10 +168,12 @@ var customOverlay = new kakao.maps.CustomOverlay({
     
     for(var i = 0 ; i < 3 ; i++){
       addMarker(new kakao.maps.LatLng(33.450701 + 0.0003 * i, 126.570667 + 0.0003 * i));
-      
-      kakao.maps.event.addListener(markers[i], 'click', function(){
-        onTapMarker.postMessage('marker ' + i + ' is tapped');
-     });
+
+      kakao.maps.event.addListener(markers[i], 'click', (function(i) {
+        return function(){
+          onTapMarker.postMessage('marker ' + i + ' is tapped');
+        };
+      })(i));
     }
     
 		  var zoomControl = new kakao.maps.ZoomControl();
@@ -174,7 +181,6 @@ var customOverlay = new kakao.maps.CustomOverlay({
    
       var mapTypeControl = new kakao.maps.MapTypeControl();
       map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-    
               ''',
         onTapMarker: (message) {
           ScaffoldMessenger.of(context)

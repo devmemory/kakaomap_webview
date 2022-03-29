@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+@deprecated
 class KakaoMapScreen extends StatelessWidget {
   KakaoMapScreen({Key? key, required this.url}) : super(key: key);
 

@@ -1,3 +1,15 @@
+## 0.4.0
+* default zoom level is added in customScript
+* [Deprecated] KakaoMapScreen is deprecated
+* KakaoMapScreen example is added(Fixed some issue)
+ - issue : intent/itms-app scheme didn't support in webview
+ - fixed : An example is added
+
+* Android centering problem is fixed
+* package update
+ webview_flutter: ^2.0.12 -> ^3.0.1
+ http: ^0.13.3 -> ^0.13.4
+
 ## 0.3.0
 * default zoom level is added
 * map controller is added

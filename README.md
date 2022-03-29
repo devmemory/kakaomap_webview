@@ -208,9 +208,11 @@ Still, there is a sample code.
     for(var i = 0 ; i < 3 ; i++){
       addMarker(new kakao.maps.LatLng(33.450701 + 0.0003 * i, 126.570667 + 0.0003 * i));
 
-      kakao.maps.event.addListener(markers[i], 'click', function(){
-        onTapMarker.postMessage('marker ' + i + ' is tapped');
-     });
+      kakao.maps.event.addListener(markers[i], 'click', (function(i) {
+        return function(){
+          onTapMarker.postMessage('marker ' + i + ' is tapped');
+        };
+      })(i));
     }
 
 		  var zoomControl = new kakao.maps.ZoomControl();
@@ -218,7 +220,6 @@ Still, there is a sample code.
 
       var mapTypeControl = new kakao.maps.MapTypeControl();
       map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
               ''',
         onTapMarker: (message) {
           ScaffoldMessenger.of(context)
@@ -283,6 +284,7 @@ Sample code
 ![controller](https://user-images.githubusercontent.com/71013471/134121052-3e12befb-b642-4c89-b32c-88dd810c074b.gif)
 
 Now you can control map more with webview controller.
+When mapController is not initated, please use StatefulWidget
 
 Sample code
 
@@ -297,7 +299,7 @@ Sample code
        children: [
          InkWell(
            onTap: () {
-             _mapController.evaluateJavascript(
+             _mapController.runJavascript(
                   'map.setLevel(map.getLevel() - 1, {animate: true})');
            },
            child: CircleAvatar(
@@ -310,7 +312,7 @@ Sample code
            ),
          InkWell(
            onTap: () {
-             _mapController.evaluateJavascript(
+             _mapController.runJavascript(
                   'map.setLevel(map.getLevel() + 1, {animate: true})');
            },
            child: CircleAvatar(
