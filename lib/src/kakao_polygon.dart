@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kakaomap_webview/src/kakao_latlng.dart';
 
+/// change Color to String hex code
 extension HexColor on Color {
   String get toHex {
     return '\'#${this.value.toRadixString(16).substring(2, 8)}\'';
   }
 }
 
+/// KakaoMap polygon
 class KakaoPolygon {
   /// Add polygon lat, lng. It must not be null
   List<KakaoLatLng> polygon;

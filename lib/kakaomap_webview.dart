@@ -6,3 +6,4 @@ export 'src/kakaomap_util.dart';
 export 'src/kakaomap_type.dart';
 export 'src/kakao_latlng.dart';
 export 'src/kakao_polygon.dart';
+export 'src/kakao_boundary.dart';

@@ -61,6 +61,9 @@ class KakaoMapView extends StatelessWidget {
   /// When user stop moving camera, this event will occur
   final void Function(JavascriptMessage)? cameraIdle;
 
+  /// North East, South West lat, lang will be updated when the move event is occurred
+  final void Function(JavascriptMessage)? boundaryUpdate;
+
   /// [KakaoPolygon] is required [KakaoPolygon.polygon] to make polygon.
   /// If null, it won't be enabled
   final KakaoPolygon? polygon;
@@ -96,6 +99,7 @@ class KakaoMapView extends StatelessWidget {
       this.onTapMarker,
       this.zoomChanged,
       this.cameraIdle,
+      this.boundaryUpdate,
       this.markerImageURL = '',
       this.customScript,
       this.mapWidgetKey,
@@ -137,6 +141,11 @@ class KakaoMapView extends StatelessWidget {
     if (cameraIdle != null) {
       channels.add(JavascriptChannel(
           name: 'cameraIdle', onMessageReceived: cameraIdle!));
+    }
+
+    if (boundaryUpdate != null) {
+      channels.add(JavascriptChannel(
+          name: 'boundaryUpdate', onMessageReceived: boundaryUpdate!));
     }
 
     if (channels.isEmpty) {
@@ -236,8 +245,37 @@ $overlayStyle
 		
 		if(${cameraIdle != null}){
 		  kakao.maps.event.addListener(map, 'dragend', function() {        
-        var latlng = map.getCenter(); 
-        cameraIdle.postMessage(latlng.toString());
+        var latlng = map.getCenter();
+        
+        var idleLatLng = {
+          lat: latlng.getLat(),
+          lng: latlng.getLng()
+        }
+        
+        cameraIdle.postMessage(JSON.stringify(idleLatLng));
+      });
+		}
+		
+		if(${boundaryUpdate != null}){
+		  kakao.maps.event.addListener(map, 'bounds_changed', function() {  
+        var bounds = map.getBounds();
+    
+        var neLatlng = bounds.getNorthEast();
+        
+        var swLatlng = bounds.getSouthWest();
+        
+        var boundary = {
+          ne: {
+            lat: neLatlng.getLat(),
+            lng: neLatlng.getLng()
+          },
+          sw: {
+            lat: swLatlng.getLat(),
+            lng: swLatlng.getLng()
+          }
+        }
+        
+        boundaryUpdate.postMessage(JSON.stringify(boundary));
       });
 		}
 		

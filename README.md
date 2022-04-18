@@ -164,12 +164,12 @@ So you can add only polygon.
               mapType: MapType.BICYCLE,
               polygon: KakaoPolygon(
                 polygon: [
-                  KakaoLatLng(33.45086654081833, 126.56906858718982),
-                  KakaoLatLng(33.45010890948828, 126.56898629127468),
-                  KakaoLatLng(33.44979857909499, 126.57049357211622),
-                  KakaoLatLng(33.450137483918496, 126.57202991943016),
-                  KakaoLatLng(33.450706188506054, 126.57223147947938),
-                  KakaoLatLng(33.45164068091554, 126.5713126693152)
+                  KakaoLatLng(lat: 33.45086654081833, lng: 126.56906858718982),
+                  KakaoLatLng(lat: 33.45010890948828, lng: 126.56898629127468),
+                  KakaoLatLng(lat: 33.44979857909499, lng: 126.57049357211622),
+                  KakaoLatLng(lat: 33.450137483918496, lng: 126.57202991943016),
+                  KakaoLatLng(lat: 33.450706188506054, lng: 126.57223147947938),
+                  KakaoLatLng(lat: 33.45164068091554, lng: 126.5713126693152)
                 ],
                 polygonColor: Colors.red,
                 polygonColorOpacity: 0.3,
@@ -334,7 +334,7 @@ Sample code
 
 - **Callbacks**
 
-Tap marker, zoom change, camera idel events are available.
+Tap marker, zoom change, camera idle, boundaryUpdate events are available.
 
 Sample code
 
@@ -348,9 +348,15 @@ Sample code
         debugPrint('current zoom level : ${message.message}');
       },
       cameraIdle: (message) {
-        KakaoMapUtil util = KakaoMapUtil();
-        KakaoLatLng latlng = util.getLatLng(message.message);
-        debugPrint('current lat lng : ${latlng.lat}, ${latlng.lng}');
+        KakaoLatLng latLng =
+            KakaoLatLng.fromJson(jsonDecode(message.message));
+        debugPrint('[idle] ${latLng.lat}, ${latLng.lng}');
       },
+      boundaryUpdate: (message) {
+        KakaoBoundary boundary =
+            KakaoBoundary.fromJson(jsonDecode(message.message));
+        debugPrint(
+            'ne : ${boundary.neLat}, ${boundary.neLng}, sw : ${boundary.swLat}, ${boundary.swLng}');
+      }
     )
 ```

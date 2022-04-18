@@ -43,9 +43,11 @@ class KakaoMapUtil {
   }
 
   /// This method is to get Lat lng from camera idle event
+  @deprecated
   KakaoLatLng getLatLng(String latlng) {
     String oob = latlng.substring(1, latlng.length - 1);
     List<String> list = oob.split(',');
-    return KakaoLatLng(double.parse(list.first), double.parse(list.last));
+    return KakaoLatLng(
+        lat: double.parse(list.first), lng: double.parse(list.last));
   }
 }

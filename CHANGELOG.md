@@ -1,3 +1,10 @@
+## 0.5.0
+* boundary update callback is added. SouthWest, NorthEast latlng will be updated when map is moved
+* KakaoBoundary class is added
+* [Deprecated] KakaoMapUtil getLatLng is deprecated
+* KakaoLatLng constructor is updated, fromJson is added
+* cameraIdle callback example is updated
+
 ## 0.4.0+1
 * ReadMe update
 
