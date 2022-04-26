@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:example/kakaomap_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:kakaomap_webview/kakaomap_webview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 const String kakaoMapKey = 'yourKey';
 
@@ -16,7 +16,9 @@ class KakaoMapTest extends StatefulWidget {
 }
 
 class _KakaoMapTestState extends State<KakaoMapTest> {
-  var _mapController;
+  late WebViewController _mapController;
+  final double _lat = 33.450701;
+  final double _lng = 126.570667;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,8 @@ class _KakaoMapTestState extends State<KakaoMapTest> {
             width: size.width,
             height: 400,
             kakaoMapKey: kakaoMapKey,
-            lat: 33.450701,
-            lng: 126.570667,
+            lat: _lat,
+            lng: _lng,
             showMapTypeControl: true,
             showZoomControl: true,
             draggableMarker: true,
@@ -62,15 +64,15 @@ class _KakaoMapTestState extends State<KakaoMapTest> {
 .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
               </style>''',
             customOverlay: '''
-var content = '<div class="customoverlay">' +
+const content = '<div class="customoverlay">' +
     '  <a href="https://map.kakao.com/link/map/11394059" target="_blank">' +
     '    <span class="title">카카오!</span>' +
     '  </a>' +
     '</div>';
 
-var position = new kakao.maps.LatLng(33.450701, 126.570667);
+const position = new kakao.maps.LatLng($_lat, $_lng);
 
-var customOverlay = new kakao.maps.CustomOverlay({
+const customOverlay = new kakao.maps.CustomOverlay({
     map: map,
     position: position,
     content: content,
@@ -129,6 +131,44 @@ var customOverlay = new kakao.maps.CustomOverlay({
               )
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              InkWell(
+                onTap: () {
+                  _mapController.runJavascript('''
+      addMarker(new kakao.maps.LatLng($_lat + 0.0003, $_lng + 0.0003));
+      
+      function addMarker(position) {
+        let testMarker = new kakao.maps.Marker({position: position});
+
+        testMarker.setMap(map);
+      }
+                      ''');
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.amber,
+                  child: const Icon(
+                    Icons.pin_drop,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  await _mapController.reload();
+                  debugPrint('[refresh] done');
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.green,
+                  child: const Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          ),
           ElevatedButton(
               child: Text('Kakao map screen'),
               onPressed: () async {
@@ -164,31 +204,31 @@ var customOverlay = new kakao.maps.CustomOverlay({
         lat: 33.450701,
         lng: 126.570667,
         customScript: '''
-    var markers = [];
+    let markers = [];
     
     function addMarker(position) {
     
-      var marker = new kakao.maps.Marker({position: position});
+      let marker = new kakao.maps.Marker({position: position});
 
       marker.setMap(map);
     
       markers.push(marker);
     }
     
-    for(var i = 0 ; i < 3 ; i++){
+    for(let i = 0 ; i < 3 ; i++){
       addMarker(new kakao.maps.LatLng(33.450701 + 0.0003 * i, 126.570667 + 0.0003 * i));
 
-      kakao.maps.event.addListener(markers[i], 'click', (function(i) {
+      kakao.maps.event.addListener(markers[i], 'click', (i) => {
         return function(){
           onTapMarker.postMessage('marker ' + i + ' is tapped');
         };
-      })(i));
+      });
     }
     
-		  var zoomControl = new kakao.maps.ZoomControl();
+		  const zoomControl = new kakao.maps.ZoomControl();
       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
    
-      var mapTypeControl = new kakao.maps.MapTypeControl();
+      const mapTypeControl = new kakao.maps.MapTypeControl();
       map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
               ''',
         onTapMarker: (message) {

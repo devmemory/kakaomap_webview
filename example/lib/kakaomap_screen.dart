@@ -59,13 +59,13 @@ class KakaoMapScreen extends StatelessWidget {
   Future<void> _iosNavigate(String url) async {
     if (url.contains('id304608425')) {
       // if kakao map exists open app
-      if (!(await launch('kakaomap://open'))) {
+      if (!(await launchUrl(Uri.parse('kakaomap://open')))) {
         // if kakao map doesn't exist open market and navigate to app store
-        await launch('https://apps.apple.com/us/app/id304608425');
+        await launchUrl(Uri.parse('https://apps.apple.com/us/app/id304608425'));
       }
     } else {
       // rest of them are just launching..
-      await launch(url);
+      await launchUrl(Uri.parse(url));
     }
   }
 }

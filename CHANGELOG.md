@@ -1,3 +1,8 @@
+## 0.5.1
+* add marker, reload screen examples are added in MapController part
+* change var to const or let
+* Not used package(url launcher) is deleted
+
 ## 0.5.0
 * boundary update callback is added. SouthWest, NorthEast latlng will be updated when map is moved
 * KakaoBoundary class is added

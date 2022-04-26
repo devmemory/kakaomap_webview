@@ -191,24 +191,26 @@ $overlayStyle
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;min-width:${width}px;min-height:${height}px;"/>
 	<script>
-		var container = document.getElementById('map');
+		const container = document.getElementById('map');
 		
-		var options = {
+		const options = {
 			center: new kakao.maps.LatLng($lat, $lng),
 			level: $zoomLevel
 		};
 
-		var map = new kakao.maps.Map(container, options);
+		const map = new kakao.maps.Map(container, options);
+		
+		let markerImage
 		
 		if(${markerImageURL.isNotEmpty}){
-		  var imageSrc = '$markerImageURL',
-		      imageSize = new kakao.maps.Size(64, 69),
-		      imageOption = {offset: new kakao.maps.Point(27, 69)},
-		      markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+		  let imageSrc = '$markerImageURL'
+		  let imageSize = new kakao.maps.Size(64, 69)
+		  let imageOption = {offset: new kakao.maps.Point(27, 69)}
+		  markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 		}
-		var markerPosition  = new kakao.maps.LatLng($lat, $lng);
+		const markerPosition  = new kakao.maps.LatLng($lat, $lng);
 		
-		var marker = new kakao.maps.Marker({
+		const marker = new kakao.maps.Marker({
       position: markerPosition,
       $markerImageOption
     });
@@ -216,11 +218,11 @@ $overlayStyle
     marker.setMap(map);
     
     if(${overlayText != null}){
-      var content = '<div class ="label"><span class="left"></span><span class="center">$overlayText</span><span class="right"></span></div>';
+      const content = '<div class ="label"><span class="left"></span><span class="center">$overlayText</span><span class="right"></span></div>';
   
-      var overlayPosition = new kakao.maps.LatLng($lat, $lng);  
+      const overlayPosition = new kakao.maps.LatLng($lat, $lng);  
   
-      var customOverlay = new kakao.maps.CustomOverlay({
+      const customOverlay = new kakao.maps.CustomOverlay({
           map: map,
           position: overlayPosition,
           content: content,
@@ -238,16 +240,16 @@ $overlayStyle
 		
 		if(${zoomChanged != null}){
 		  kakao.maps.event.addListener(map, 'zoom_changed', function() {        
-        var level = map.getLevel();
+        const level = map.getLevel();
         zoomChanged.postMessage(level.toString());
       });
 		}
 		
 		if(${cameraIdle != null}){
 		  kakao.maps.event.addListener(map, 'dragend', function() {        
-        var latlng = map.getCenter();
+        const latlng = map.getCenter();
         
-        var idleLatLng = {
+        const idleLatLng = {
           lat: latlng.getLat(),
           lng: latlng.getLng()
         }
@@ -258,13 +260,13 @@ $overlayStyle
 		
 		if(${boundaryUpdate != null}){
 		  kakao.maps.event.addListener(map, 'bounds_changed', function() {  
-        var bounds = map.getBounds();
+        const bounds = map.getBounds();
     
-        var neLatlng = bounds.getNorthEast();
+        const neLatlng = bounds.getNorthEast();
         
-        var swLatlng = bounds.getSouthWest();
+        const swLatlng = bounds.getSouthWest();
         
-        var boundary = {
+        const boundary = {
           ne: {
             lat: neLatlng.getLat(),
             lng: neLatlng.getLng()
@@ -280,17 +282,17 @@ $overlayStyle
 		}
 		
 		if($showZoomControl){
-		  var zoomControl = new kakao.maps.ZoomControl();
+		  const zoomControl = new kakao.maps.ZoomControl();
       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
     }
     
     if($showMapTypeControl){
-      var mapTypeControl = new kakao.maps.MapTypeControl();
+      const mapTypeControl = new kakao.maps.MapTypeControl();
       map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
     }
     
     if(${mapType != null}){
-      var changeMapType = ${mapType?.getType};
+      const changeMapType = ${mapType?.getType};
       
       map.addOverlayMapTypeId(changeMapType);
     }
@@ -298,7 +300,7 @@ $overlayStyle
     marker.setDraggable($draggableMarker); 
     
     if(${polygon != null}){
-      var polygon = new kakao.maps.Polygon({
+      const polygon = new kakao.maps.Polygon({
 	      map: map,
         path: [${polygon?.getPolygon}],
         strokeWeight: ${polygon?.strokeWeight},
@@ -325,14 +327,14 @@ $overlayStyle
 <body style="padding:0; margin:0;">
 	<div id='map' style="width:100%;height:100%;min-width:${width}px;min-height:${height}px;"></div>
 	<script>
-		var container = document.getElementById('map');
+		const container = document.getElementById('map');
 				
-		var options = {
+		const options = {
 			center: new kakao.maps.LatLng($lat, $lng),
 			level: $zoomLevel
 		};
 
-		var map = new kakao.maps.Map(container, options);
+		const map = new kakao.maps.Map(container, options);
 		
 		$customScript
 	</script>

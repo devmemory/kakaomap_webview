@@ -295,41 +295,79 @@ Sample code
 
 ```
     KakaoMapView(
-       mapController: (controller) {
-          _mapController = controller;
-       },
+      mapController: (controller) {
+        _mapController = controller;
+      },
     ),
     Row(
-       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-       children: [
-         InkWell(
-           onTap: () {
-             _mapController.runJavascript(
-                  'map.setLevel(map.getLevel() - 1, {animate: true})');
-           },
-           child: CircleAvatar(
-             backgroundColor: Colors.red,
-             child: const Icon(
-               Icons.remove,
-               color: Colors.white,
-               ),
-             ),
-           ),
-         InkWell(
-           onTap: () {
-             _mapController.runJavascript(
-                  'map.setLevel(map.getLevel() + 1, {animate: true})');
-           },
-           child: CircleAvatar(
-             backgroundColor: Colors.blue,
-             child: const Icon(
-               Icons.add,
-               color: Colors.white,
-               ),
-             ),
-           ),
-         ],
-       ),
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        InkWell(
+          onTap: () {
+            _mapController.runJavascript(
+                'map.setLevel(map.getLevel() - 1, {animate: true})');
+          },
+          child: CircleAvatar(
+            backgroundColor: Colors.red,
+            child: const Icon(
+              Icons.remove,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            _mapController.runJavascript(
+                'map.setLevel(map.getLevel() + 1, {animate: true})');
+          },
+          child: CircleAvatar(
+            backgroundColor: Colors.blue,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
+    ),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        InkWell(
+          onTap: () {
+            _mapController.runJavascript('''
+          addMarker(new kakao.maps.LatLng($_lat + 0.0003, $_lng + 0.0003));
+
+          function addMarker(position) {
+            let testMarker = new kakao.maps.Marker({position: position});
+
+            testMarker.setMap(map);
+          }
+            ''');
+          },
+          child: CircleAvatar(
+            backgroundColor: Colors.amber,
+            child: const Icon(
+              Icons.pin_drop,
+              color: Colors.white,
+            ),
+          ),
+          ),
+          InkWell(
+            onTap: () async {
+              await _mapController.reload();
+              debugPrint('[refresh] done');
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.green,
+              child: const Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
+      )
 ```
 
 - **Callbacks**
