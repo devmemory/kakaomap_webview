@@ -1,3 +1,8 @@
+## 0.6.0
+* KakaoPolygon is renamed to KakaoFigure.
+* PolyLine feature is added.
+* ReadMe update.
+
 ## 0.5.1
 * add marker, reload screen examples are added in MapController part
 * change var to const or let

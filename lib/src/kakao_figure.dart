@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kakaomap_webview/src/kakao_latlng.dart';
 
+/// stroke style
+enum StrokeStyle { solid, dashed, shortdashdot, longdash }
+
 /// change Color to String hex code
 extension HexColor on Color {
   String get toHex {
@@ -8,10 +11,13 @@ extension HexColor on Color {
   }
 }
 
-/// KakaoMap polygon
-class KakaoPolygon {
-  /// Add polygon lat, lng. It must not be null
-  List<KakaoLatLng> polygon;
+/// This class is used for polygon, ployline
+class KakaoFigure {
+  /// Add polygon or polyline lat, lng. It must not be null
+  List<KakaoLatLng> path;
+
+  /// Stroke style. default is [StrokeStyle.solid]
+  StrokeStyle strokeStyle;
 
   /// StrokeColor. Default blue.
   /// If you want to change opacity, use [strokeColorOpacity]
@@ -37,21 +43,22 @@ class KakaoPolygon {
   String get getPolygonColor => polygonColor.toHex;
 
   /// This getter is used to make a hex code for the polygon array
-  String get getPolygon {
-    String polygonText = '[';
-    String polygonList = '';
-    polygon.forEach((element) {
-      polygonList += 'new kakao.maps.LatLng(${element.lat}, ${element.lng}),';
+  String get getPath {
+    String pathText = '[';
+    String pathList = '';
+    path.forEach((element) {
+      pathList += 'new kakao.maps.LatLng(${element.lat}, ${element.lng}),';
     });
-    polygonText += '$polygonList]';
-    return polygonText;
+    pathText += '$pathList]';
+    return pathText;
   }
 
-  KakaoPolygon(
-      {required this.polygon,
+  KakaoFigure(
+      {required this.path,
       this.strokeColor = Colors.blue,
       this.strokeWeight = 2.0,
       this.strokeColorOpacity = 0.8,
       this.polygonColor = Colors.lightBlue,
-      this.polygonColorOpacity = 0.7});
+      this.polygonColorOpacity = 0.7,
+      this.strokeStyle = StrokeStyle.solid});
 }

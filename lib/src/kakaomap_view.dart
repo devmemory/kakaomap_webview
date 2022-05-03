@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kakaomap_webview/src/kakao_polygon.dart';
+import 'package:kakaomap_webview/src/kakao_figure.dart';
 import 'package:kakaomap_webview/src/kakaomap_type.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -64,9 +64,13 @@ class KakaoMapView extends StatelessWidget {
   /// North East, South West lat, lang will be updated when the move event is occurred
   final void Function(JavascriptMessage)? boundaryUpdate;
 
-  /// [KakaoPolygon] is required [KakaoPolygon.polygon] to make polygon.
+  /// [KakaoFigure] is required [KakaoFigure.path] to make polygon.
   /// If null, it won't be enabled
-  final KakaoPolygon? polygon;
+  final KakaoFigure? polygon;
+
+  /// [KakaoFigure] is required [KakaoFigure.path] to make polyline.
+  /// If null, it won't be enabled
+  final KakaoFigure? polyline;
 
   /// This is used to make your own features.
   /// Only map size and center position is set.
@@ -94,6 +98,7 @@ class KakaoMapView extends StatelessWidget {
       this.customOverlayStyle,
       this.customOverlay,
       this.polygon,
+      this.polyline,
       this.showZoomControl = false,
       this.showMapTypeControl = false,
       this.onTapMarker,
@@ -292,7 +297,7 @@ $overlayStyle
     }
     
     if(${mapType != null}){
-      const changeMapType = ${mapType?.getType};
+      const changeMapType = ${mapType!.getType};
       
       map.addOverlayMapTypeId(changeMapType);
     }
@@ -302,12 +307,24 @@ $overlayStyle
     if(${polygon != null}){
       const polygon = new kakao.maps.Polygon({
 	      map: map,
-        path: [${polygon?.getPolygon}],
-        strokeWeight: ${polygon?.strokeWeight},
-        strokeColor: ${polygon?.getStrokeColor},
-        strokeOpacity: ${polygon?.strokeColorOpacity},
-        fillColor: ${polygon?.getPolygonColor},
-        fillOpacity: ${polygon?.polygonColorOpacity} 
+        path: [${polygon!.getPath}],
+        strokeWeight: ${polygon!.strokeWeight},
+        strokeColor: ${polygon!.getStrokeColor},
+        strokeOpacity: ${polygon!.strokeColorOpacity},
+        strokeStyle: '${polygon!.strokeStyle.name}',
+        fillColor: ${polygon!.getPolygonColor},
+        fillOpacity: ${polygon!.polygonColorOpacity} 
+      });
+    }
+    
+    if(${polyline != null}){
+      const polyline = new kakao.maps.Polyline({
+        map: map,
+        path: [${polyline!.getPath}],
+        strokeWeight: ${polyline!.strokeWeight},
+        strokeColor: ${polyline!.getStrokeColor},
+        strokeOpacity: ${polyline!.strokeColorOpacity},
+        strokeStyle: '${polyline!.strokeStyle.name}'
       });
     }
 	</script>

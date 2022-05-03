@@ -141,15 +141,13 @@ class KakaoMapTest extends StatelessWidget {
 - Flutter : https://github.com/devmemory/kakaomap_webview/blob/main/example/lib/kakaomap_screen.dart
 - Android : https://github.com/devmemory/kakaomap_webview/tree/main/example/android/app/src/main
 
-- **Add polygon**
+- **Add polygon, polyline**
 
-![polygon](https://user-images.githubusercontent.com/71013471/126046341-24c3869f-ef6a-440d-94b7-385845c16602.png)
+strokeColor, strokeWeight, strokeColorOpacity, polygonColor, polygonColorOpacity, strokeStyle are optional.
 
-polygonColor, polygonColorOpacity, strokeColor, strokeWeight, strokeColorOpacity
+Those features have default values. Only path is required except when you want to customize.
 
-These features are optional. It can be null.
-
-So you can add only polygon.
+![스크린샷 2022-05-03 오전 10 43 45](https://user-images.githubusercontent.com/71013471/166393694-a8563eab-1c3e-4319-9ac2-378a78ed2189.png)
 
 ```
         KakaoMapView(
@@ -161,9 +159,18 @@ So you can add only polygon.
               showMapTypeControl: true,
               showZoomControl: true,
               draggableMarker: true,
-              mapType: MapType.BICYCLE,
-              polygon: KakaoPolygon(
-                polygon: [
+              polyline: KakaoFigure(
+                path: [
+                  KakaoLatLng(lat: 33.45080604081833, lng: 126.56900858718982),
+                  KakaoLatLng(lat: 33.450766588506054, lng: 126.57263147947938),
+                  KakaoLatLng(lat: 33.45162008091554, lng: 126.5713226693152)
+                ],
+                strokeColor: Colors.blue,
+                strokeWeight: 2.5,
+                strokeColorOpacity: 0.9,
+              ),
+              polygon: KakaoFigure(
+                path: [
                   KakaoLatLng(lat: 33.45086654081833, lng: 126.56906858718982),
                   KakaoLatLng(lat: 33.45010890948828, lng: 126.56898629127468),
                   KakaoLatLng(lat: 33.44979857909499, lng: 126.57049357211622),
@@ -175,7 +182,8 @@ So you can add only polygon.
                 polygonColorOpacity: 0.3,
                 strokeColor: Colors.deepOrange,
                 strokeWeight: 2.5,
-                strokeColorOpacity: 0.9
+                strokeColorOpacity: 0.9,
+                strokeStyle: StrokeStyle.shortdashdot,
               ),
               markerImageURL:
                   'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',

@@ -41,20 +41,32 @@ class _KakaoMapTestState extends State<KakaoMapTest> {
             mapController: (controller) {
               _mapController = controller;
             },
-            polygon: KakaoPolygon(
-                polygon: [
-                  KakaoLatLng(lat: 33.45086654081833, lng: 126.56906858718982),
-                  KakaoLatLng(lat: 33.45010890948828, lng: 126.56898629127468),
-                  KakaoLatLng(lat: 33.44979857909499, lng: 126.57049357211622),
-                  KakaoLatLng(lat: 33.450137483918496, lng: 126.57202991943016),
-                  KakaoLatLng(lat: 33.450706188506054, lng: 126.57223147947938),
-                  KakaoLatLng(lat: 33.45164068091554, lng: 126.5713126693152)
-                ],
-                polygonColor: Colors.red,
-                polygonColorOpacity: 0.3,
-                strokeColor: Colors.deepOrange,
-                strokeWeight: 2.5,
-                strokeColorOpacity: 0.9),
+            polyline: KakaoFigure(
+              path: [
+                KakaoLatLng(lat: 33.45080604081833, lng: 126.56900858718982),
+                KakaoLatLng(lat: 33.450766588506054, lng: 126.57263147947938),
+                KakaoLatLng(lat: 33.45162008091554, lng: 126.5713226693152)
+              ],
+              strokeColor: Colors.blue,
+              strokeWeight: 2.5,
+              strokeColorOpacity: 0.9,
+            ),
+            polygon: KakaoFigure(
+              path: [
+                KakaoLatLng(lat: 33.45086654081833, lng: 126.56906858718982),
+                KakaoLatLng(lat: 33.45010890948828, lng: 126.56898629127468),
+                KakaoLatLng(lat: 33.44979857909499, lng: 126.57049357211622),
+                KakaoLatLng(lat: 33.450137483918496, lng: 126.57202991943016),
+                KakaoLatLng(lat: 33.450706188506054, lng: 126.57223147947938),
+                KakaoLatLng(lat: 33.45164068091554, lng: 126.5713126693152)
+              ],
+              polygonColor: Colors.red,
+              polygonColorOpacity: 0.3,
+              strokeColor: Colors.deepOrange,
+              strokeWeight: 2.5,
+              strokeColorOpacity: 0.9,
+              strokeStyle: StrokeStyle.shortdashdot,
+            ),
             // overlayText: '카카오!',
             customOverlayStyle: '''<style>
               .customoverlay {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
