@@ -307,24 +307,24 @@ $overlayStyle
     if(${polygon != null}){
       const polygon = new kakao.maps.Polygon({
 	      map: map,
-        path: [${polygon!.getPath}],
-        strokeWeight: ${polygon!.strokeWeight},
-        strokeColor: ${polygon!.getStrokeColor},
-        strokeOpacity: ${polygon!.strokeColorOpacity},
-        strokeStyle: '${polygon!.strokeStyle.name}',
-        fillColor: ${polygon!.getPolygonColor},
-        fillOpacity: ${polygon!.polygonColorOpacity} 
+        path: [${polygon?.getPath}],
+        strokeWeight: ${polygon?.strokeWeight},
+        strokeColor: ${polygon?.getStrokeColor},
+        strokeOpacity: ${polygon?.strokeColorOpacity},
+        strokeStyle: '${polygon?.strokeStyle.name}',
+        fillColor: ${polygon?.getPolygonColor},
+        fillOpacity: ${polygon?.polygonColorOpacity} 
       });
     }
     
     if(${polyline != null}){
       const polyline = new kakao.maps.Polyline({
         map: map,
-        path: [${polyline!.getPath}],
-        strokeWeight: ${polyline!.strokeWeight},
-        strokeColor: ${polyline!.getStrokeColor},
-        strokeOpacity: ${polyline!.strokeColorOpacity},
-        strokeStyle: '${polyline!.strokeStyle.name}'
+        path: [${polyline?.getPath}],
+        strokeWeight: ${polyline?.strokeWeight},
+        strokeColor: ${polyline?.getStrokeColor},
+        strokeOpacity: ${polyline?.strokeColorOpacity},
+        strokeStyle: '${polyline?.strokeStyle.name}'
       });
     }
 	</script>
