@@ -297,7 +297,7 @@ $overlayStyle
     }
     
     if(${mapType != null}){
-      const changeMapType = ${mapType!.getType};
+      const changeMapType = ${mapType?.getType};
       
       map.addOverlayMapTypeId(changeMapType);
     }

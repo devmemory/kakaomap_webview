@@ -1,3 +1,6 @@
+## 0.6.2
+* null safety error fix.
+
 ## 0.6.1
 * null safety error fix.
 
